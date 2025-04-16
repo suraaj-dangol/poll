@@ -43,12 +43,13 @@ function addOption() {
   const index = optionsDiv.children.length + 1;
   const wrapper = document.createElement("div");
 
+  // Outer wrapper scrolls if it overflows on mobile
   wrapper.className = "w-full overflow-x-auto";
 
   wrapper.innerHTML = `
-    <div class="flex items-center gap-2 w-[600px] max-w-full">
+    <div class="flex items-center gap-2 w-[650px] max-w-full">
       <input type="text" placeholder="Option ${index}" class="flex-grow border p-2 rounded h-10 min-w-0" maxlength="50" aria-label="Option ${index}" required />
-      <label class="bg-gray-200 text-gray-800 px-3 py-2 rounded text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center text-sm whitespace-nowrap">
+      <label class="bg-gray-200 text-gray-800 px-2 py-2 rounded text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center text-xs whitespace-nowrap">
         Image (opt)
         <input type="file" accept="image/*" class="hidden" aria-label="Image for option ${index}" />
       </label>
@@ -61,6 +62,7 @@ function addOption() {
   optionsDiv.appendChild(wrapper);
   updateMaxVotes();
 }
+
 
 
 
