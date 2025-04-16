@@ -34,26 +34,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function addOption() {
   const optionsDiv = document.getElementById("options");
+
+  // ✅ Prevent adding more than 10 options
   if (optionsDiv.children.length >= 10) {
     alert("Maximum 10 options allowed.");
     return;
   }
+
   const index = optionsDiv.children.length + 1;
   const wrapper = document.createElement("div");
-  wrapper.className = "flex items-center gap-2 flex-nowrap";
+  wrapper.className = "flex items-center gap-2 sm:flex-nowrap flex-wrap w-full mb-2";
+
   wrapper.innerHTML = `
-    <input type="text" placeholder="Option ${index}" class="flex-1 border p-2 rounded min-w-0 h-10" maxlength="50" aria-label="Option ${index}" required />
-    <div class="flex items-center gap-2">
-      <label class="min-w-fit bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center">
-        Image (Opt)
-        <input type="file" accept="image/*" class="hidden" aria-label="Image for option ${index}" />
-      </label>
-      <button type="button" onclick="this.parentElement.parentElement.remove(); updateMaxVotes();" class="text-red-500 hover:text-red-700" aria-label="Remove option"><i class="fas fa-trash"></i></button>
-    </div>
+    <input type="text" placeholder="Option ${index}" class="flex-grow border p-2 rounded h-10 min-w-0" maxlength="50" aria-label="Option ${index}" required />
+    <label class="bg-gray-200 text-gray-800 px-3 py-2 rounded text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center text-sm whitespace-nowrap">
+      Image (opt)
+      <input type="file" accept="image/*" class="hidden" aria-label="Image for option ${index}" />
+    </label>
+    <button type="button" onclick="this.parentElement.remove(); updateMaxVotes();" class="text-red-500 hover:text-red-700 h-10">
+      <i class="fas fa-trash"></i>
+    </button>
   `;
+
   optionsDiv.appendChild(wrapper);
   updateMaxVotes();
 }
+
 
 function updateMaxVotes() {
   const maxVotesInput = document.getElementById("max-votes");
