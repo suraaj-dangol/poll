@@ -267,11 +267,21 @@
   <!-- Footer -->
   <footer class="w-full max-w-4xl mt-12 text-center text-sm text-gray-500">
     <hr class="my-4">
-    <p>
-      <a href="privacy.html" class="hover:underline">Privacy Policy</a> |
-      <a href="terms.html" class="hover:underline">Terms of Service</a> |
-      <a href="contact.html" class="hover:underline">Contact</a>
-    </p>
+<p class="flex flex-wrap gap-4 justify-center">
+  <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+  <span>|</span>
+  <a href="terms.html" class="hover:underline">Terms of Service</a>
+  <span>|</span>
+  <a href="contact.html" class="hover:underline">Contact</a>
+  <span>|</span>
+  <div class="relative group inline-block">
+    <button class="hover:underline text-blue-600 font-medium">Blog ▼</button>
+    <div class="absolute hidden group-hover:block bg-white border rounded shadow-lg mt-1 p-2 z-50">
+      <a href="polling-guide.html" class="block px-4 py-2 hover:bg-gray-100 text-sm">Polling Guide</a>
+    </div>
+  </div>
+</p>
+
     <p class="mt-2">© 2025 QuickVoteTally. All rights reserved.</p>
   </footer>
 
