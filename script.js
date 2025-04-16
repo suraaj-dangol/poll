@@ -40,12 +40,12 @@ function addOption() {
   }
   const index = optionsDiv.children.length + 1;
   const wrapper = document.createElement("div");
-  wrapper.className = "flex items-center gap-2 flex-wrap";
+  wrapper.className = "flex items-center gap-2 flex-nowrap";
   wrapper.innerHTML = `
     <input type="text" placeholder="Option ${index}" class="flex-1 border p-2 rounded min-w-0 h-10" maxlength="50" aria-label="Option ${index}" required />
     <div class="flex items-center gap-2">
-      <label class="w-32 bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center">
-        Insert Image (Optional)
+      <label class="min-w-fit bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-center cursor-pointer hover:bg-gray-300 h-10 flex items-center justify-center">
+        Image (Opt)
         <input type="file" accept="image/*" class="hidden" aria-label="Image for option ${index}" />
       </label>
       <button type="button" onclick="this.parentElement.parentElement.remove(); updateMaxVotes();" class="text-red-500 hover:text-red-700" aria-label="Remove option"><i class="fas fa-trash"></i></button>
