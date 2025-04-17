@@ -336,5 +336,30 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
   <script src="firebase.js"></script>
   <script src="script.js"></script>
+
+  <!-- TEST LAYOUT START -->
+<div class="w-full overflow-x-auto border border-dashed border-gray-300 my-4">
+  <div class="flex flex-nowrap items-center min-w-[500px] w-max px-2">
+
+    <!-- Add Option (left) -->
+    <div class="whitespace-nowrap">
+      <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+        <i class="fas fa-plus mr-1"></i> Add Option (Max 10)
+      </button>
+    </div>
+
+    <!-- Spacer -->
+    <div class="flex-1"></div>
+
+    <!-- Max Votes (right) -->
+    <div class="whitespace-nowrap flex items-center gap-1">
+      <label class="text-sm text-gray-700">Max Votes:</label>
+      <input type="number" value="1" min="1" max="10" class="w-12 text-center border rounded border-gray-300 p-1 text-sm" />
+    </div>
+
+  </div>
+</div>
+<!-- TEST LAYOUT END -->
+
 </body>
 </html>
