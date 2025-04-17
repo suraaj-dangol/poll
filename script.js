@@ -44,7 +44,8 @@ function addOption() {
   const wrapper = document.createElement("div");
 
   // Outer scroll container
-  wrapper.className = "w-full overflow-x-auto";
+  wrapper.className = "w-full overflow-x-auto scroll-hint";
+
 
   wrapper.innerHTML = `
     <div class="inline-flex flex-nowrap items-center gap-2 min-w-[640px] max-w-full py-1">
