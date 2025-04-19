@@ -1,336 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>freefastpoll</title>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FreeFastPoll - Create Free Anonymous Polls</title>
+  <meta name="description" content="Create free, anonymous polls instantly. Share and get real-time results. No login required.">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .animate-pulse { animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    #star-rating input:checked + label, #star-rating label:hover { color: #FBBF24; }
-    #question-counter, #feedback-counter { font-weight: bold; }
-    .tooltip { position: relative; }
-    .tooltip .tooltip-text {
-      visibility: hidden;
-      background-color: #1f2937;
-      color: #fff;
-      text-align: center;
-      border-radius: 4px;
-      padding: 4px 8px;
-      position: absolute;
-      z-index: 10;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s, visibility 0.3s;
-    }
-    .tooltip:hover .tooltip-text { 
-      visibility: visible; 
-      opacity: 1; 
-    }
-    .qr-container:hover .qr-code-display { display: block; }
-    .chart-tooltip { position: relative; }
-    .chart-tooltip .chart-tooltip-text {
-      visibility: hidden;
-      background-color: #1f2937;
-      color: #fff;
-      text-align: center;
-      border-radius: 4px;
-      padding: 8px;
-      position: absolute;
-      z-index: 10;
-      bottom: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .chart-tooltip:hover .chart-tooltip-text { visibility: visible; opacity: 1; }
-    /* Added: Responsive styles for mobile */
-    @media (max-width: 640px) {
-      .flex.items-center.gap-2.flex-wrap { flex-direction: column; align-items: stretch; }
-      .w-32 { width: 100% !important; }
-      .flex.justify-between.items-center { flex-direction: column; gap: 1rem; }
-      .flex.gap-3.mt-6 { flex-direction: column; gap: 0.5rem; }
-      .flex.gap-2 { flex-direction: column; gap: 0.5rem; }
-      .grid.grid-cols-1.sm\:grid-cols-2.gap-3 { grid-template-columns: 1fr; }
-      .w-full.max-w-2xl { width: 100%; padding: 1rem; }
-      .fixed.bottom-5.right-5 { bottom: 1rem; right: 1rem; }
-      .absolute.bottom-16.right-0 { bottom: 4rem; right: 0; width: 80%; }
-      .relative.mb-4.flex.items-center { flex-direction: column; gap: 0.5rem; }
-      .relative.mb-3 { position: static; }
-      .absolute.right-2.top-1\/2.-translate-y-1\/2 { position: static; margin-top: 0.5rem; }
-      .border-l.border-gray-300.h-6.mx-2 { display: none; }
-      .inline-flex.gap-2.mb-4.border.border-gray-300.rounded-lg.p-2 { flex-direction: column; align-items: center; }
-    }
-    <style>
-  .scroll-hint {
-    position: relative;
-  }
 
-  .scroll-hint::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
-    pointer-events: none;
-  }
-</style>
-
-  </style>
+  <!-- Google Analytics Placeholder -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'YOUR_GA_MEASUREMENT_ID');
+  </script>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 flex flex-col items-center">
-  <!-- Create Poll Box -->
-  <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-lg border border-gray-200 bg-gradient-to-br from-gray-50 to-gray-100">
-    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Create Your Poll</h1>
-    <form id="createPollForm" class="space-y-4">
-      <div>
-        <label for="question" class="sr-only">Question</label>
-<div class="relative">
-  <input id="question" class="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-500 pr-12" type="text" placeholder="Ask something..." maxlength="100" aria-label="Poll question" required />
-  <span id="question-counter" class="absolute right-3 bottom-2 text-xs text-gray-400">0</span>
-</div>
 
-        <p id="question-error" class="text-sm text-red-600 hidden">Question is required</p>
-      </div>
-      <div id="options" class="space-y-3"></div>
+<body class="bg-[#f5f5dc] text-[#5c4033] min-h-screen flex flex-col">
 
-<div class="w-full overflow-x-auto">
-  <div class="flex flex-nowrap items-center min-w-[500px] w-max px-2">
+  <!-- Hero Section -->
+  <header class="text-center p-6 bg-blue-500 text-white">
+    <h1 class="text-3xl md:text-5xl font-bold">Create Free, Anonymous Polls Instantly!</h1>
+    <p class="mt-2 text-lg">No login. No hassle. Just pure voting!</p>
+    <button onclick="scrollToCreate()" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">Create Your Poll</button>
+  </header>
 
-    <!-- Add Option button -->
-    <div class="whitespace-nowrap">
-      <button type="button" onclick="addOption()" class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
-        <i class="fas fa-plus mr-1"></i> Add Option (Max 10)
-      </button>
-    </div>
+  <!-- Poll Creation Section -->
+  <main class="flex-1 p-4" id="pollCreation">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold mb-4 text-blue-500">Create Your Poll</h2>
+      <input id="question" type="text" placeholder="Enter your poll question here..." class="w-full p-2 border rounded mb-4">
 
-    <!-- Spacer -->
-    <div class="flex-1"></div>
+      <div id="options" class="space-y-2"></div>
 
-    <!-- Max Votes block -->
-    <div class="whitespace-nowrap flex items-center gap-1">
-      <label for="max-votes" class="text-sm text-gray-700">Max Votes:</label>
-      <input id="max-votes" type="number" min="1" max="10" value="1"
-             class="w-12 text-center border rounded border-gray-300 p-1 text-sm"
-             aria-label="Maximum votes per user" />
-    </div>
-  </div>
-</div>
-      
-<div class="w-full">
-  <div class="overflow-x-auto">
-    <div class="inline-flex gap-2 w-max py-1">
-      <button type="button" onclick="previewPoll()" class="min-w-[100px] bg-gray-500 text-white py-3 px-4 rounded-lg hover:bg-gray-600 text-sm">Preview</button>
-      <button type="button" onclick="createPoll()" class="min-w-[100px] bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 text-sm">Create Poll</button>
-      <button type="button" onclick="resetForm()" class="min-w-[100px] bg-gray-300 text-gray-800 py-3 px-4 rounded-lg hover:bg-gray-400 text-sm">Reset</button>
-    </div>
-  </div>
-</div>
-    </form>
-  </div>
-
-  <!-- Access Poll -->
-  <div class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg mt-6">
-    <div class="flex gap-2">
-      <input id="poll-id-input" class="flex-grow border p-3 rounded-lg" placeholder="Enter Poll ID to access..." aria-label="Poll ID" />
-      <button onclick="goToPoll()" class="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700">Access Poll</button>
-    </div>
-  </div>
-
-  <!-- Countdown Timer -->
-  <div id="countdown" class="mt-6 text-center text-sm text-gray-600 hidden"></div>
-
-  <!-- Voting Box -->
-  <div id="voting-box" class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg mt-6 hidden">
-    <h2 class="text-xl font-semibold mb-4 text-center text-gray-800">Cast Your Vote</h2>
-    <div id="vote-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-    <p id="vote-message" class="text-red-600 text-center mt-4 hidden">You have already voted!</p>
-    <button id="submit-votes" onclick="submitVotes()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 mt-4 hidden">Submit Votes</button>
-  </div>
-
-  <!-- Result Box -->
-  <div id="result-box" class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg mt-6 hidden">
-    <h2 class="text-xl font-semibold mb-4 text-center text-gray-800">Poll Results</h2>
-    <p id="poll-question" class="text-center font-medium mb-4 text-gray-700"></p>
-    <div class="inline-flex gap-2 mb-4 border border-gray-300 rounded-lg p-2">
-      <button id="bar-btn" onclick="toggleChart('bar')" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg">Bar</button>
-      <button id="pie-btn" onclick="toggleChart('pie')" class="bg-gray-200 text-gray-800 px-3 py-1 rounded-lg">Pie</button>
-      <div class="chart-tooltip">
-        <i class="fas fa-info-circle text-gray-600"></i>
-        <span class="chart-tooltip-text">Bar shows vote counts; Pie shows vote proportions.</span>
+      <div class="flex space-x-2 mt-4">
+        <button onclick="addOption()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
+        <button onclick="createPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Create Poll</button>
       </div>
     </div>
-    <canvas id="poll-chart" class="w-full max-w-md mx-auto mb-4" aria-label="Poll results"></canvas>
-    <div id="result-summary" class="flex flex-wrap gap-4 justify-center text-sm text-gray-600" aria-live="polite"></div>
-    <button onclick="downloadCSV()" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mt-4">Download Results (CSV)</button>
-  </div>
+  </main>
 
-  <!-- Sharing Box -->
-  <div id="sharing-box" class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg mt-6 hidden">
-    <h2 class="text-xl font-semibold mb-4 text-center text-gray-800">Share This Poll</h2>
-    <div class="relative mb-4 flex items-center">
-      <input id="share-link" class="w-full border border-gray-300 p-3 rounded-lg" readonly aria-label="Share link" />
-      <div class="border-l border-gray-300 h-6 mx-2"></div>
-      <button onclick="copyLink()" class="text-gray-800 hover:text-gray-600" aria-label="Copy link">
-        <i class="fas fa-copy text-lg"></i>
-      </button>
-    </div>
-    <div class="flex justify-center gap-4 flex-wrap">
-      <div class="tooltip">
-        <button onclick="window.open(shareLinks.x())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share on X">
-          <i class="fab fa-x-twitter text-lg"></i>
-        </button>
-        <span class="tooltip-text">X</span>
-      </div>
-      <div class="tooltip">
-        <button onclick="window.open(shareLinks.fb())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share on Facebook">
-          <i class="fab fa-facebook-f text-lg"></i>
-        </button>
-        <span class="tooltip-text">Facebook</span>
-      </div>
-      <div class="tooltip">
-        <button onclick="window.open(shareLinks.wa())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share on WhatsApp">
-          <i class="fab fa-whatsapp text-lg"></i>
-        </button>
-        <span class="tooltip-text">WhatsApp</span>
-      </div>
-      <div class="tooltip">
-        <button onclick="window.open(shareLinks.email())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share via Email">
-          <i class="fas fa-envelope text-lg"></i>
-        </button>
-        <span class="tooltip-text">Email</span>
-      </div>
-      <div class="tooltip">
-        <button onclick="window.open(shareLinks.reddit())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share on Reddit">
-          <i class="fab fa-reddit-alien text-lg"></i>
-        </button>
-        <span class="tooltip-text">Reddit</span>
-      </div>
-      <div class="tooltip qr-container relative">
-        <button onmouseover="showQRCode()" onmouseout="hideQRCode()" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Show QR code">
-          <i class="fas fa-qrcode text-lg"></i>
-        </button>
-        <span class="tooltip-text">QR Code</span>
-        <div class="qr-code-display hidden absolute mt-12">
-          <canvas id="qr-code" class="mx-auto" width="100" height="100" aria-label="QR code for sharing"></canvas>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Vote Section -->
+  <section id="voteSection" class="hidden p-4 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-green-600">Cast Your Vote Below:</h2>
+    <div id="voteOptions" class="space-y-2"></div>
+    <button onclick="submitVote()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mt-4">Vote</button>
+  </section>
 
-  <!-- Feedback Box -->
-  <div id="feedback-box" class="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg mt-6 hidden">
-    <h2 class="text-xl font-semibold mb-4 text-center text-gray-800">Leave Feedback</h2>
-    <div class="flex justify-center gap-1 mb-4" id="star-rating" role="radiogroup" aria-label="Rate this poll">
-      <input type="radio" name="rating" value="1" id="star1" class="hidden" /><label for="star1" class="text-2xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
-      <input type="radio" name="rating" value="2" id="star2" class="hidden" /><label for="star2" class="text-2xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
-      <input type="radio" name="rating" value="3" id="star3" class="hidden" /><label for="star3" class="text-2xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
-      <input type="radio" name="rating" value="4" id="star4" class="hidden" /><label for="star4" class="text-2xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
-      <input type="radio" name="rating" value="5" id="star5" class="hidden" /><label for="star5" class="text-2xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
-    </div>
-    <textarea id="feedback" class="w-full border border-gray-300 p-3 rounded-lg h-32" placeholder="Your thoughts..." maxlength="500" aria-label="Feedback"></textarea>
-    <p class="text-sm text-gray-500 mt-1"><span id="feedback-counter">0</span>/500</p>
-    <button onclick="submitFeedback()" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 mt-4">Submit</button>
-  </div>
+  <!-- Result Section -->
+  <section id="resultSection" class="hidden p-4 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-blue-600">Poll Results:</h2>
+    <canvas id="pollChart" class="w-full h-64"></canvas>
+    <div id="optionLabels" class="mt-4"></div>
+  </section>
 
-  <!-- Floating Buttons -->
-  <div class="fixed bottom-5 right-5 space-y-3 z-50">
-    <div class="relative">
-      <button id="share-site-btn" onclick="toggleShareSiteBox()" class="bg-purple-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-purple-700 animate-pulse" aria-label="Share site">
-        <i class="fas fa-bullhorn"></i>
-      </button>
-      <div id="share-site-box" class="hidden absolute bottom-16 right-0 w-64 bg-white p-4 rounded-xl shadow-lg border border-gray-200">
-        <h2 class="text-lg font-semibold mb-3 text-gray-800">Spread the Word</h2>
-        <div class="relative mb-3">
-          <input id="site-share-link" class="w-full border border-gray-300 p-2 rounded-lg pr-8" readonly aria-label="Site share link" value="https://freefastpoll.netlify.app" />
-          <button onclick="copySiteLink()" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-800" aria-label="Copy site link">
-            <i class="fas fa-copy"></i>
-          </button>
-        </div>
-        <div class="flex justify-center gap-3 flex-wrap">
-          <div class="tooltip">
-            <button onclick="window.open(siteShareLinks.x())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share site on X">
-              <i class="fab fa-x-twitter text-lg"></i>
-            </button>
-            <span class="tooltip-text">X</span>
-          </div>
-          <div class="tooltip">
-            <button onclick="window.open(siteShareLinks.fb())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share site on Facebook">
-              <i class="fab fa-facebook-f text-lg"></i>
-            </button>
-            <span class="tooltip-text">Facebook</span>
-          </div>
-          <div class="tooltip">
-            <button onclick="window.open(siteShareLinks.reddit())" class="text-gray-800 w-8 h-8 rounded-full border border-gray-300 p-2 hover:bg-gray-100 flex items-center justify-center" aria-label="Share site on Reddit">
-              <i class="fab fa-reddit-alien text-lg"></i>
-            </button>
-            <span class="tooltip-text">Reddit</span>
-          </div>
-        </div>
+  <!-- Feedback Section -->
+  <section class="p-4 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-green-600">Leave us a Feedback! ❤️ (Emojis are welcome!)</h2>
+    <div class="flex space-x-2">
+      <input id="feedbackInput" type="text" placeholder="Your feedback..." class="w-full p-2 border rounded">
+      <button onclick="submitFeedback()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Submit</button>
+    </div>
+    <div id="feedbackWall" class="mt-6 space-y-2"></div>
+  </section>
+
+  <!-- Share Site Section -->
+  <section class="p-4 max-w-2xl mx-auto text-center">
+    <h2 class="text-2xl font-bold mb-4 text-blue-500">Spread the Word!</h2>
+    <div class="flex flex-col items-center space-y-2">
+      <button onclick="shareSite()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Share Site</button>
+      <div id="shareOptions" class="hidden flex flex-col space-y-2 mt-4">
+        <a id="shareWhatsApp" href="#" class="text-green-600 underline">Share on WhatsApp</a>
+        <a id="shareFacebook" href="#" class="text-blue-600 underline">Share on Facebook</a>
+        <a id="shareMessenger" href="#" class="text-blue-400 underline">Share on Messenger</a>
+        <a id="shareEmail" href="#" class="text-red-600 underline">Share via Email</a>
       </div>
     </div>
-    <div class="tooltip">
-      <a href="https://ko-fi.com/donatedisables" target="_blank" class="bg-blue-600 text-white w-12 h-12 rounded-full shadow-lg hover:bg-blue-700 animate-pulse flex items-center justify-center" aria-label="Support us" aria-describedby="support-tooltip">
-        <i class="fas fa-heart"></i>
-      </a>
-      <span class="tooltip-text w-48 text-center">Support Us: The raised money will be used to empower disabled people around the world. Your support helps provide life-changing opportunities globally.</span>
-    </div>
-  </div>
+  </section>
 
-  <!-- Vote Success Modal -->
-  <div id="vote-success-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white p-6 rounded-xl shadow-lg text-center max-w-md">
-      <div class="text-green-500 text-5xl mb-2"><i class="fas fa-check-circle"></i></div>
-      <h2 class="text-xl font-bold mb-2">Vote Successful</h2>
-      <p class="text-gray-600 mb-4">Thank you for participating.</p>
-      <button onclick="closeVoteModal()" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Close</button>
+  <!-- Support Us Modal -->
+  <div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-[#f5f5dc] p-8 rounded-lg shadow-lg text-center">
+      <h2 class="text-2xl font-bold mb-4 text-green-600">Love FreeFastPoll? 🚀</h2>
+      <p class="mb-4 text-[#5c4033]">Support us on Ko-fi and help keep the service free!</p>
+      <button onclick="redirectSupport()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Support Us</button>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="w-full max-w-4xl mt-12 text-center text-sm text-gray-500">
-    <hr class="my-4">
-<p class="flex flex-wrap gap-4 justify-center">
-  <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-  <span>|</span>
-  <a href="terms.html" class="hover:underline">Terms of Service</a>
-  <span>|</span>
-  <a href="contact.html" class="hover:underline">Contact</a>
-  <span>|</span>
-  <div class="relative group inline-block">
-    <button class="hover:underline text-blue-600 font-medium">Blog ▼</button>
-    <div class="absolute hidden group-hover:block bg-white border rounded shadow-lg mt-1 p-2 z-50">
-      <a href="polling-guide.html" class="block px-4 py-2 hover:bg-gray-100 text-sm">Polling Guide</a>
+  <footer class="bg-[#a0522d] text-white text-center p-4 mt-8">
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="privacy.html" class="underline">Privacy Policy</a>
+      <a href="terms.html" class="underline">Terms of Use</a>
+      <a href="contact.html" class="underline">Contact</a>
+      <a href="polling-guide.html" class="underline">Polling Blog</a>
     </div>
-  </div>
-</p>
-
-    <p class="mt-2">© 2025 QuickVoteTally. All rights reserved.</p>
+    <div class="mt-2 text-sm">&copy; 2025 FreeFastPoll. All rights reserved.</div>
   </footer>
 
-  <!-- AdSense Placeholder -->
-  <div class="w-full max-w-4xl mt-6">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXX" data-ad-slot="XXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
