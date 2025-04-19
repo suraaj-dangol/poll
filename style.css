@@ -1,0 +1,66 @@
+/* ====== FreeFastPoll Custom Styles ====== */
+
+/* Delete Button Styling */
+.delete-button {
+  color: #3B82F6; /* Blue */
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.delete-button:hover {
+  color: #22C55E; /* Green on hover */
+}
+
+/* Support Modal Background */
+#supportModal {
+  display: none; /* hidden by default */
+}
+
+/* Support Modal Active */
+#supportModal.active {
+  display: flex;
+}
+
+/* Share Options Section */
+#shareOptions a {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+/* Feedback Wall Styling */
+#feedbackWall {
+  background-color: #fffaf0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e0d6c5;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Expired Poll Message */
+#expiredMessage {
+  background-color: #fffaf0;
+  color: #ef4444;
+  padding: 1rem;
+  border: 2px dashed #ef4444;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Disable text selection for some elements */
+button, a {
+  user-select: none;
+}
+
+/* Poll Chart Canvas */
+#pollChart {
+  margin-top: 1rem;
+}
