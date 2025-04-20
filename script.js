@@ -1,24 +1,18 @@
-// ====== FreeFastPoll Main Script ======
+// ===== FreeFastPoll Main Script =====
 
-// Firebase Config - Replace with your own if needed
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_FIREBASE_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_FIREBASE_PROJECT_ID",
-  storageBucket: "YOUR_FIREBASE_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+// Cloudinary Config
+const CLOUD_NAME = "dlrqoa4mx"; // your provided cloud name
+const UPLOAD_PRESET = "freefastpoll_upload"; // your provided upload preset
+const SUPPORT_LINK = "https://ko-fi.com/YOUR_KOFI_USERNAME"; // replace with your real Ko-fi
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Global variables
+// Global Variables
+let pollId = null;
 let pollData = null;
 let chart = null;
-let pollId = null;
 
-// On Page Load
+// Firebase already initialized via firebase.js
+
+// Page Load
 window.onload = () => {
   pollId = new URLSearchParams(window.location.search).get("poll");
   if (pollId) {
@@ -26,60 +20,116 @@ window.onload = () => {
   } else {
     addOption();
     addOption();
+    loadFeedbacks();
   }
 };
 
-// Scroll to Create Poll section
+// Scroll to Poll Creation
 function scrollToCreate() {
   document.getElementById('pollCreation').scrollIntoView({ behavior: "smooth" });
 }
 
-// Add Option input
+// Access Poll by ID
+function accessPoll() {
+  const id = document.getElementById("accessPollId").value.trim();
+  if (id) {
+    window.location.href = `?poll=${id}`;
+  }
+}
+
+// Add Poll Option
 function addOption() {
   const optionsDiv = document.getElementById("options");
   const wrapper = document.createElement("div");
-  wrapper.className = "flex items-center space-x-2";
+  wrapper.className = "flex items-center gap-2 option-preview";
   wrapper.innerHTML = `
-    <input type="text" placeholder="Option ${optionsDiv.children.length + 1}" class="w-full p-2 border rounded">
+    <input type="text" placeholder="Option ${optionsDiv.children.length + 1}" class="w-full p-2 border rounded" />
+    <input type="file" accept="image/*" onchange="previewImage(this)" />
     <button class="delete-button" onclick="removeOption(this)">❌</button>
   `;
   optionsDiv.appendChild(wrapper);
 }
 
-// Remove Option input
-function removeOption(btn) {
+// Remove Poll Option
+function removeOption(button) {
   const optionsDiv = document.getElementById("options");
   if (optionsDiv.children.length > 2) {
-    btn.parentElement.remove();
+    button.parentElement.remove();
   }
+}
+
+// Preview Uploaded Image
+function previewImage(input) {
+  const wrapper = input.parentElement;
+  let img = wrapper.querySelector("img");
+  if (!img) {
+    img = document.createElement("img");
+    wrapper.appendChild(img);
+  }
+  img.src = URL.createObjectURL(input.files[0]);
 }
 
 // Create Poll
 async function createPoll() {
   const question = document.getElementById("question").value.trim();
-  const optionElements = document.querySelectorAll("#options input");
-  const options = Array.from(optionElements).map(input => input.value.trim()).filter(opt => opt);
+  const maxVotes = parseInt(document.getElementById("maxVotes").value) || 1;
+  const optionsElements = document.querySelectorAll("#options > div");
 
-  if (!question || options.length < 2) {
+  if (!question || optionsElements.length < 2) {
     alert("Please enter a question and at least two options.");
     return;
   }
 
-  const createdAt = Date.now();
-  const newPoll = { question, options, votes: Array(options.length).fill(0), createdAt };
+  const options = [];
+  const optionImages = [];
 
-  const docRef = await db.collection("polls").add(newPoll);
+  for (const optionDiv of optionsElements) {
+    const text = optionDiv.querySelector("input[type='text']").value.trim();
+    const fileInput = optionDiv.querySelector("input[type='file']");
+    let imageUrl = "";
+
+    if (fileInput && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      const response = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, formData);
+      imageUrl = response.data.secure_url;
+    }
+
+    if (text || imageUrl) {
+      options.push(text || "Image Only");
+      optionImages.push(imageUrl);
+    }
+  }
+
+  if (options.length < 2) {
+    alert("Please enter at least two valid options (text or image).");
+    return;
+  }
+
+  const newPoll = {
+    question,
+    options,
+    optionImages,
+    votes: Array(options.length).fill(0),
+    createdAt: Date.now(),
+    maxVotes,
+  };
+
+  const docRef = await firebase.firestore().collection("polls").add(newPoll);
   pollId = docRef.id;
-
   window.history.replaceState({}, "", `?poll=${pollId}`);
-  showVoteSection(newPoll);
-  alert("🎉 Poll Created Successfully! Scroll down to vote and share it!");
+
+  alert("🎉 Poll created successfully! Scroll down to vote and share it!");
+  loadPoll(pollId);
 }
 
 // Load Poll
 async function loadPoll(id) {
   try {
-    const doc = await db.collection("polls").doc(id).get();
+    const doc = await firebase.firestore().collection("polls").doc(id).get();
     if (doc.exists) {
       const data = doc.data();
       const expired = Date.now() > (data.createdAt + 48 * 60 * 60 * 1000);
@@ -105,30 +155,41 @@ function showVoteSection(data) {
   voteSection.classList.remove("hidden");
   voteSection.scrollIntoView({ behavior: "smooth" });
 
-  const voteOptions = document.getElementById("voteOptions");
-  voteOptions.innerHTML = "";
+  const voteForm = document.getElementById("voteForm");
+  voteForm.innerHTML = "";
 
-  data.options.forEach((opt, index) => {
-    const label = document.createElement("label");
-    label.className = "block bg-white p-2 rounded border flex items-center space-x-2";
-    label.innerHTML = `
-      <input type="radio" name="voteOption" value="${index}" class="form-radio text-blue-500">
-      <span>${opt}</span>
+  data.options.forEach((option, index) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "flex items-center gap-2";
+    wrapper.innerHTML = `
+      <input type="${data.maxVotes > 1 ? "checkbox" : "radio"}" name="voteOption" value="${index}" class="form-radio text-blue-500" />
+      <span>${option}</span>
+      ${data.optionImages[index] ? `<img src="${data.optionImages[index]}" class="w-12 h-12 object-cover rounded">` : ""}
     `;
-    voteOptions.appendChild(label);
+    voteForm.appendChild(wrapper);
   });
 }
 
 // Submit Vote
 async function submitVote() {
-  const selected = document.querySelector('input[name="voteOption"]:checked');
-  if (!selected) {
-    alert("Please select an option before voting.");
+  const selected = Array.from(document.querySelectorAll('input[name="voteOption"]:checked'));
+  if (selected.length === 0) {
+    alert("Please select at least one option before voting.");
     return;
   }
-  const index = parseInt(selected.value);
-  pollData.votes[index]++;
-  await db.collection("polls").doc(pollId).update({ votes: pollData.votes });
+  if (selected.length > pollData.maxVotes) {
+    alert(`You can select up to ${pollData.maxVotes} options only.`);
+    return;
+  }
+
+  selected.forEach(input => {
+    pollData.votes[parseInt(input.value)]++;
+  });
+
+  await firebase.firestore().collection("polls").doc(pollId).update({
+    votes: pollData.votes
+  });
+
   showResults();
 }
 
@@ -137,6 +198,8 @@ function showResults() {
   document.getElementById("voteSection").style.display = "none";
   const resultSection = document.getElementById("resultSection");
   resultSection.classList.remove("hidden");
+
+  document.getElementById("pollQuestionDisplay").textContent = pollData.question;
 
   const ctx = document.getElementById('pollChart').getContext('2d');
   if (chart) chart.destroy();
@@ -162,12 +225,12 @@ function showResults() {
   optionLabels.innerHTML = pollData.options.map((opt, i) => `${i + 1}. ${opt}`).join('<br>');
 }
 
-// Share Site
-function shareSite() {
+// Toggle Share Options
+function toggleShareOptions() {
   const options = document.getElementById("shareOptions");
   options.classList.toggle("hidden");
 
-  const url = window.location.href.split('?')[0];
+  const url = window.location.origin;
   document.getElementById("shareWhatsApp").href = `https://wa.me/?text=Vote anonymously at FreeFastPoll! ${url}`;
   document.getElementById("shareFacebook").href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
   document.getElementById("shareMessenger").href = `fb-messenger://share?link=${url}`;
@@ -175,8 +238,14 @@ function shareSite() {
 }
 
 // Support Us Modal
+function openSupportModal() {
+  document.getElementById("supportModal").classList.add("active");
+}
+function closeSupportModal() {
+  document.getElementById("supportModal").classList.remove("active");
+}
 function redirectSupport() {
-  window.open("YOUR_SUPPORT_LINK_HERE", "_blank");
+  window.open(SUPPORT_LINK, "_blank");
 }
 
 // Submit Feedback
@@ -186,7 +255,7 @@ async function submitFeedback() {
     alert("Please enter some feedback!");
     return;
   }
-  await db.collection("feedbacks").add({ feedback, createdAt: Date.now() });
+  await firebase.firestore().collection("feedbacks").add({ feedback, createdAt: Date.now() });
   document.getElementById("feedbackInput").value = "";
   loadFeedbacks();
 }
@@ -196,7 +265,7 @@ async function loadFeedbacks() {
   const feedbackWall = document.getElementById("feedbackWall");
   feedbackWall.innerHTML = "";
 
-  const snapshot = await db.collection("feedbacks").orderBy("createdAt", "desc").limit(20).get();
+  const snapshot = await firebase.firestore().collection("feedbacks").orderBy("createdAt", "desc").limit(30).get();
   snapshot.forEach(doc => {
     const p = document.createElement("p");
     p.textContent = doc.data().feedback;
@@ -204,7 +273,7 @@ async function loadFeedbacks() {
   });
 }
 
-// Show Poll Expired Message
+// Show Expired Poll
 function showExpired() {
   document.body.innerHTML = `
     <div id="expiredMessage">
