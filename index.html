@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FreeFastPoll - Create Free Anonymous Polls</title>
-  <meta name="description" content="Create free, anonymous polls instantly. Share and get real-time results. No login required.">
+  <title>FreeFastPoll - Create Anonymous Polls Instantly</title>
+  <meta name="description" content="Create free anonymous polls and share them instantly. No login needed. Fast and easy.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Google Analytics Placeholder -->
+  <!-- Google Analytics (Insert your real ID later) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,89 +19,109 @@
   </script>
 </head>
 
-<body class="bg-[#f5f5dc] text-[#5c4033] min-h-screen flex flex-col">
+<body class="bg-[#f5f5dc] text-[#5c4033] flex flex-col min-h-screen">
 
-  <!-- Hero Section -->
-  <header class="text-center p-6 bg-blue-500 text-white">
-    <h1 class="text-3xl md:text-5xl font-bold">Create Free, Anonymous Polls Instantly!</h1>
-    <p class="mt-2 text-lg">No login. No hassle. Just pure voting!</p>
-    <button onclick="scrollToCreate()" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">Create Your Poll</button>
-  </header>
+<!-- Header -->
+<header class="text-center p-6 bg-blue-500 text-white">
+  <h1 class="text-3xl md:text-5xl font-bold">FreeFastPoll</h1>
+  <p class="mt-2 text-lg">Create Free, Anonymous Polls Instantly!</p>
+  <div class="flex flex-wrap justify-center mt-4 gap-2">
+    <button onclick="scrollToCreate()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full">Create Poll</button>
+    <button onclick="openSupportModal()" class="bg-yellow-400 hover:bg-yellow-500 text-[#5c4033] py-2 px-4 rounded-full">Support Us</button>
+    <button onclick="toggleShareOptions()" class="bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-full">Share Site</button>
+  </div>
+  <div id="shareOptions" class="hidden mt-4 flex flex-col space-y-2">
+    <a id="shareWhatsApp" href="#" class="text-green-600 underline">Share on WhatsApp</a>
+    <a id="shareFacebook" href="#" class="text-blue-600 underline">Share on Facebook</a>
+    <a id="shareMessenger" href="#" class="text-blue-400 underline">Share on Messenger</a>
+    <a id="shareEmail" href="#" class="text-red-600 underline">Share via Email</a>
+  </div>
+</header>
 
-  <!-- Poll Creation Section -->
-  <main class="flex-1 p-4" id="pollCreation">
-    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h2 class="text-2xl font-bold mb-4 text-blue-500">Create Your Poll</h2>
-      <input id="question" type="text" placeholder="Enter your poll question here..." class="w-full p-2 border rounded mb-4">
-
-      <div id="options" class="space-y-2"></div>
-
-      <div class="flex space-x-2 mt-4">
-        <button onclick="addOption()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
-        <button onclick="createPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Create Poll</button>
-      </div>
-    </div>
-  </main>
-
-  <!-- Vote Section -->
-  <section id="voteSection" class="hidden p-4 max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4 text-green-600">Cast Your Vote Below:</h2>
-    <div id="voteOptions" class="space-y-2"></div>
-    <button onclick="submitVote()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded mt-4">Vote</button>
-  </section>
-
-  <!-- Result Section -->
-  <section id="resultSection" class="hidden p-4 max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4 text-blue-600">Poll Results:</h2>
-    <canvas id="pollChart" class="w-full h-64"></canvas>
-    <div id="optionLabels" class="mt-4"></div>
-  </section>
-
-  <!-- Feedback Section -->
-  <section class="p-4 max-w-2xl mx-auto">
-    <h2 class="text-2xl font-bold mb-4 text-green-600">Leave us a Feedback! ❤️ (Emojis are welcome!)</h2>
-    <div class="flex space-x-2">
-      <input id="feedbackInput" type="text" placeholder="Your feedback..." class="w-full p-2 border rounded">
-      <button onclick="submitFeedback()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Submit</button>
-    </div>
-    <div id="feedbackWall" class="mt-6 space-y-2"></div>
-  </section>
-
-  <!-- Share Site Section -->
-  <section class="p-4 max-w-2xl mx-auto text-center">
-    <h2 class="text-2xl font-bold mb-4 text-blue-500">Spread the Word!</h2>
-    <div class="flex flex-col items-center space-y-2">
-      <button onclick="shareSite()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Share Site</button>
-      <div id="shareOptions" class="hidden flex flex-col space-y-2 mt-4">
-        <a id="shareWhatsApp" href="#" class="text-green-600 underline">Share on WhatsApp</a>
-        <a id="shareFacebook" href="#" class="text-blue-600 underline">Share on Facebook</a>
-        <a id="shareMessenger" href="#" class="text-blue-400 underline">Share on Messenger</a>
-        <a id="shareEmail" href="#" class="text-red-600 underline">Share via Email</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Support Us Modal -->
-  <div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-[#f5f5dc] p-8 rounded-lg shadow-lg text-center">
-      <h2 class="text-2xl font-bold mb-4 text-green-600">Love FreeFastPoll? 🚀</h2>
-      <p class="mb-4 text-[#5c4033]">Support us on Ko-fi and help keep the service free!</p>
-      <button onclick="redirectSupport()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Support Us</button>
+<!-- Hero Access Section -->
+<section class="p-4 max-w-3xl mx-auto">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-blue-600">Access an Existing Poll</h2>
+    <div class="flex gap-2">
+      <input id="accessPollId" type="text" placeholder="Enter Poll ID..." class="w-full p-2 border rounded">
+      <button onclick="accessPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Access</button>
     </div>
   </div>
+</section>
 
-  <!-- Footer -->
-  <footer class="bg-[#a0522d] text-white text-center p-4 mt-8">
-    <div class="flex flex-wrap justify-center gap-4">
-      <a href="privacy.html" class="underline">Privacy Policy</a>
-      <a href="terms.html" class="underline">Terms of Use</a>
-      <a href="contact.html" class="underline">Contact</a>
-      <a href="polling-guide.html" class="underline">Polling Blog</a>
+<!-- Poll Creation Section -->
+<section id="pollCreation" class="flex-1 p-4 max-w-3xl mx-auto">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-blue-600">Create Your Poll</h2>
+    <input id="question" type="text" placeholder="Enter your poll question here..." class="w-full p-2 border rounded mb-4">
+
+    <!-- Max Votes Input -->
+    <div class="mb-4">
+      <label class="font-semibold">Maximum options a voter can select:</label>
+      <input id="maxVotes" type="number" min="1" placeholder="Default is 1" class="w-full p-2 border rounded mt-2">
     </div>
-    <div class="mt-2 text-sm">&copy; 2025 FreeFastPoll. All rights reserved.</div>
-  </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="script.js"></script>
+    <div id="options" class="space-y-4 mb-4"></div>
+
+    <div class="flex flex-col md:flex-row gap-4">
+      <button onclick="addOption()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
+      <button onclick="createPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Create Poll</button>
+    </div>
+  </div>
+</section>
+
+<!-- Vote Section -->
+<section id="voteSection" class="hidden p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-green-600">Cast Your Vote</h2>
+  <form id="voteForm" class="space-y-2"></form>
+  <button onclick="submitVote()" class="mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Submit Vote</button>
+</section>
+
+<!-- Results Section -->
+<section id="resultSection" class="hidden p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-blue-600">Poll Results</h2>
+  <p id="pollQuestionDisplay" class="text-lg mb-2 font-semibold"></p>
+  <canvas id="pollChart" class="w-full h-64"></canvas>
+  <div id="optionLabels" class="mt-4 space-y-2"></div>
+</section>
+
+<!-- Feedback Section -->
+<section class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-green-600">Feedback Wall</h2>
+  <div class="flex space-x-2 mb-4">
+    <input id="feedbackInput" type="text" placeholder="Write feedback..." class="w-full p-2 border rounded">
+    <button onclick="submitFeedback()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Submit</button>
+  </div>
+  <div id="feedbackWall" class="space-y-2"></div>
+</section>
+
+<!-- Support Modal -->
+<div id="supportModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-[#f5f5dc] p-6 rounded-lg text-center space-y-4">
+    <h2 class="text-2xl font-bold text-green-600">Love FreeFastPoll? 🚀</h2>
+    <p>Support us on Ko-fi to help keep the platform free!</p>
+    <button onclick="redirectSupport()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Support Us</button>
+    <button onclick="closeSupportModal()" class="text-blue-600 underline">Cancel</button>
+  </div>
+</div>
+<!-- Footer -->
+<footer class="bg-[#a0522d] text-white text-center p-4 mt-8">
+  <div class="flex flex-wrap justify-center gap-4">
+    <a href="privacy.html" class="underline">Privacy Policy</a>
+    <a href="terms.html" class="underline">Terms of Use</a>
+    <a href="contact.html" class="underline">Contact</a>
+    <a href="polling-guide.html" class="underline">Polling Blog</a>
+  </div>
+  <div class="mt-2 text-sm">&copy; 2025 FreeFastPoll. All rights reserved.</div>
+</footer>
+
+<!-- External Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Scripts -->
+<script src="firebase.js"></script>
+<script src="script.js"></script>
+
 </body>
 </html>
