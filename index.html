@@ -73,13 +73,13 @@
 
     <input id="question" type="text" placeholder="Enter your poll question here..." class="w-full p-2 border rounded mb-4">
 
-    <!-- Max Votes and Add Option aligned in one line -->
+    <!-- Max Votes and Add Option neatly aligned -->
     <div class="flex flex-col md:flex-row gap-4 items-center mb-4">
-      <div class="flex-1">
+      <div class="flex-1 w-full">
         <label class="font-semibold">Max options a voter can select:</label>
         <input id="maxVotes" type="number" min="1" value="1" class="w-full p-2 border rounded mt-2">
       </div>
-      <button onclick="addOption()" class="mt-6 md:mt-0 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
+      <button onclick="addOption()" class="mt-6 md:mt-0 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded whitespace-nowrap">➕ Add Option</button>
     </div>
 
     <!-- Options Section -->
@@ -90,6 +90,7 @@
     </div>
   </div>
 </section>
+
 
 
 <!-- Vote Section -->
