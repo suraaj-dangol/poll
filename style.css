@@ -87,3 +87,19 @@ footer a {
     align-items: center;
   }
 }
+/* Share Modal Styling */
+#shareModal {
+  display: none;
+}
+#shareModal.active {
+  display: flex;
+}
+
+/* Share Icons */
+#shareModal img {
+  transition: transform 0.2s ease;
+}
+#shareModal img:hover {
+  transform: scale(1.2);
+}
+
