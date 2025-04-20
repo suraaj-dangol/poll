@@ -11,19 +11,39 @@
   color: #22C55E; /* Green hover */
 }
 
-/* Support Modal Visibility */
+/* Option Preview Wrapper */
+.option-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Text Input for Poll Options */
+.option-preview input[type="text"] {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* File Input for Poll Option Image */
+.option-preview input[type="file"] {
+  flex-shrink: 0;
+}
+
+/* Share Modal Styling */
+#shareModal {
+  display: none;
+}
+#shareModal.active {
+  display: flex;
+}
+
+/* Support Modal Styling */
 #supportModal {
   display: none;
 }
 #supportModal.active {
   display: flex;
-}
-
-/* Share Options Styling */
-#shareOptions a {
-  font-size: 1.1rem;
-  font-weight: 500;
-  text-decoration: underline;
 }
 
 /* Feedback Wall */
@@ -36,7 +56,7 @@
   overflow-y: auto;
 }
 
-/* Poll Expired Message */
+/* Expired or Not Found Messages */
 #expiredMessage {
   background-color: #fffaf0;
   color: #ef4444;
@@ -47,37 +67,22 @@
   margin-top: 2rem;
 }
 
-/* Poll Chart */
-#pollChart {
-  margin-top: 1rem;
-}
-
 /* Smooth Scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Disable text selection for some buttons */
-button, a {
-  user-select: none;
-}
-
-/* Footer Links (Mobile and Desktop) */
+/* Footer Links */
 footer a {
   white-space: nowrap;
 }
 
-/* Poll Option Preview (with Images) */
-.option-preview {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+/* Share Icons Animation */
+#shareModal img {
+  transition: transform 0.2s ease;
 }
-.option-preview img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 8px;
+#shareModal img:hover {
+  transform: scale(1.2);
 }
 
 /* Mobile Adjustments */
@@ -86,54 +91,4 @@ footer a {
     flex-direction: column;
     align-items: center;
   }
-}
-/* Share Modal Styling */
-#shareModal {
-  display: none;
-}
-#shareModal.active {
-  display: flex;
-}
-
-/* Share Icons */
-#shareModal img {
-  transition: transform 0.2s ease;
-}
-#shareModal img:hover {
-  transform: scale(1.2);
-}
-
-/* Option Preview Wrapper */
-.option-preview {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-/* Input Textbox for Option */
-.option-preview input[type="text"] {
-  flex: 1;
-  min-width: 180px;
-}
-
-/* File Input for Image Upload */
-.option-preview input[type="file"] {
-  flex-shrink: 0;
-}
-
-/* Delete Button for Option */
-.delete-button {
-  color: #3B82F6;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-.delete-button:hover {
-  color: #22C55E;
-}
-
-/* Fix Add Option & Max Votes Row */
-#pollCreation .flex-col.md\:flex-row {
-  flex-wrap: wrap;
 }
