@@ -83,8 +83,14 @@ async function createPoll() {
       formData.append("file", file);
       formData.append("upload_preset", UPLOAD_PRESET);
 
-      const response = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, formData);
-      imageUrl = response.data.secure_url;
+      try {
+        const response = await axios.post(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`, formData);
+        imageUrl = response.data.secure_url;
+      } catch (error) {
+        console.error("Image upload failed", error);
+        alert("Image upload failed. Please try again or remove image.");
+        return;
+      }
     }
 
     if (text || imageUrl) {
@@ -213,7 +219,7 @@ function showResults() {
   optionLabels.innerHTML = pollData.options.map((opt, i) => `${i + 1}. ${opt}`).join('<br>');
 }
 
-// Share Site Modal
+// Open Share Modal
 function openShareModal() {
   const modal = document.getElementById("shareModal");
   modal.classList.add("active");
@@ -253,7 +259,7 @@ async function submitFeedback() {
   loadFeedbacks();
 }
 
-// Load Feedback Wall
+// Load Feedbacks
 async function loadFeedbacks() {
   const feedbackWall = document.getElementById("feedbackWall");
   feedbackWall.innerHTML = "";
