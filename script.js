@@ -1,18 +1,15 @@
-// ===== FreeFastPoll Main Script =====
+// ===== FreeFastPoll Script =====
 
-// Cloudinary Config
-const CLOUD_NAME = "dlrqoa4mx"; // your provided cloud name
-const UPLOAD_PRESET = "freefastpoll_upload"; // your provided upload preset
-const SUPPORT_LINK = "https://ko-fi.com/YOUR_KOFI_USERNAME"; // replace with your real Ko-fi
+// Cloudinary Configuration
+const CLOUD_NAME = "dlrqoa4mx";
+const UPLOAD_PRESET = "freefastpoll_upload";
+const SUPPORT_LINK = "https://ko-fi.com/YOUR_KOFI_USERNAME"; // Replace with your real link
 
-// Global Variables
 let pollId = null;
 let pollData = null;
 let chart = null;
 
-// Firebase already initialized via firebase.js
-
-// Page Load
+// On page load
 window.onload = () => {
   pollId = new URLSearchParams(window.location.search).get("poll");
   if (pollId) {
@@ -24,20 +21,12 @@ window.onload = () => {
   }
 };
 
-// Scroll to Poll Creation
+// Scroll to Create Poll
 function scrollToCreate() {
   document.getElementById('pollCreation').scrollIntoView({ behavior: "smooth" });
 }
 
-// Access Poll by ID
-function accessPoll() {
-  const id = document.getElementById("accessPollId").value.trim();
-  if (id) {
-    window.location.href = `?poll=${id}`;
-  }
-}
-
-// Add Poll Option
+// Add Option (Text + Optional Image)
 function addOption() {
   const optionsDiv = document.getElementById("options");
   const wrapper = document.createElement("div");
@@ -50,15 +39,7 @@ function addOption() {
   optionsDiv.appendChild(wrapper);
 }
 
-// Remove Poll Option
-function removeOption(button) {
-  const optionsDiv = document.getElementById("options");
-  if (optionsDiv.children.length > 2) {
-    button.parentElement.remove();
-  }
-}
-
-// Preview Uploaded Image
+// Preview Image
 function previewImage(input) {
   const wrapper = input.parentElement;
   let img = wrapper.querySelector("img");
@@ -69,6 +50,14 @@ function previewImage(input) {
   img.src = URL.createObjectURL(input.files[0]);
 }
 
+// Remove Option
+function removeOption(button) {
+  const optionsDiv = document.getElementById("options");
+  if (optionsDiv.children.length > 2) {
+    button.parentElement.remove();
+  }
+}
+
 // Create Poll
 async function createPoll() {
   const question = document.getElementById("question").value.trim();
@@ -76,7 +65,7 @@ async function createPoll() {
   const optionsElements = document.querySelectorAll("#options > div");
 
   if (!question || optionsElements.length < 2) {
-    alert("Please enter a question and at least two options.");
+    alert("Please enter a poll question and at least two options.");
     return;
   }
 
@@ -105,7 +94,7 @@ async function createPoll() {
   }
 
   if (options.length < 2) {
-    alert("Please enter at least two valid options (text or image).");
+    alert("Please enter at least two valid options.");
     return;
   }
 
@@ -125,7 +114,6 @@ async function createPoll() {
   alert("🎉 Poll created successfully! Scroll down to vote and share it!");
   loadPoll(pollId);
 }
-
 // Load Poll
 async function loadPoll(id) {
   try {
@@ -225,16 +213,21 @@ function showResults() {
   optionLabels.innerHTML = pollData.options.map((opt, i) => `${i + 1}. ${opt}`).join('<br>');
 }
 
-// Toggle Share Options
-function toggleShareOptions() {
-  const options = document.getElementById("shareOptions");
-  options.classList.toggle("hidden");
+// Share Site Modal
+function openShareModal() {
+  const modal = document.getElementById("shareModal");
+  modal.classList.add("active");
 
   const url = window.location.origin;
   document.getElementById("shareWhatsApp").href = `https://wa.me/?text=Vote anonymously at FreeFastPoll! ${url}`;
   document.getElementById("shareFacebook").href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
   document.getElementById("shareMessenger").href = `fb-messenger://share?link=${url}`;
   document.getElementById("shareEmail").href = `mailto:?subject=Vote in a Poll&body=Join the poll: ${url}`;
+}
+
+// Close Share Modal
+function closeShareModal() {
+  document.getElementById("shareModal").classList.remove("active");
 }
 
 // Support Us Modal
@@ -260,7 +253,7 @@ async function submitFeedback() {
   loadFeedbacks();
 }
 
-// Load Feedbacks
+// Load Feedback Wall
 async function loadFeedbacks() {
   const feedbackWall = document.getElementById("feedbackWall");
   feedbackWall.innerHTML = "";
@@ -291,4 +284,12 @@ function showNotFound() {
       <p class="mt-4">The poll you are trying to access does not exist. <a href="/" class="text-blue-500 underline">Create a new one</a>!</p>
     </div>
   `;
+}
+
+// Access Poll Manually
+function accessPoll() {
+  const id = document.getElementById("accessPollId").value.trim();
+  if (id) {
+    window.location.href = `?poll=${id}`;
+  }
 }
