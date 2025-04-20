@@ -53,22 +53,27 @@
 <section id="pollCreation" class="flex-1 p-4 max-w-3xl mx-auto">
   <div class="bg-white p-6 rounded-lg shadow-md">
     <h2 class="text-2xl font-bold mb-4 text-blue-600">Create Your Poll</h2>
+
     <input id="question" type="text" placeholder="Enter your poll question here..." class="w-full p-2 border rounded mb-4">
 
-    <!-- Max Votes Input -->
-    <div class="mb-4">
-      <label class="font-semibold">Maximum options a voter can select:</label>
-      <input id="maxVotes" type="number" min="1" placeholder="Default is 1" class="w-full p-2 border rounded mt-2">
+    <!-- Max Votes and Add Option aligned in one line -->
+    <div class="flex flex-col md:flex-row gap-4 items-center mb-4">
+      <div class="flex-1">
+        <label class="font-semibold">Max options a voter can select:</label>
+        <input id="maxVotes" type="number" min="1" value="1" class="w-full p-2 border rounded mt-2">
+      </div>
+      <button onclick="addOption()" class="mt-6 md:mt-0 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
     </div>
 
+    <!-- Options Section -->
     <div id="options" class="space-y-4 mb-4"></div>
 
-    <div class="flex flex-col md:flex-row gap-4">
-      <button onclick="addOption()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Add Option</button>
-      <button onclick="createPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">Create Poll</button>
+    <div class="flex justify-center">
+      <button onclick="createPoll()" class="bg-green-500 hover:bg-green-600 text-white py-2 px-8 rounded">Create Poll</button>
     </div>
   </div>
 </section>
+
 
 <!-- Vote Section -->
 <section id="voteSection" class="hidden p-4 max-w-3xl mx-auto">
